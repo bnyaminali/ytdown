@@ -39,7 +39,7 @@ def duration(vid_file_path):
             if 'duration' in s:
                 return float(s['duration'])
 
-    raise Exception('duration Not found')
+    raise Exception('ماوە نەدۆزراوە')
 
 
 if __name__ == "__main__":

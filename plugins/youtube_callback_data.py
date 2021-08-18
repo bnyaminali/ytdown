@@ -58,23 +58,23 @@ async def catch_youtube_dldata(c, q):
         if metadata.has("height"):
             height = metadata.get("height")
         img = Image.open(thumb_image_path)
-        if cb_data.startswith(("audio", "docaudio", "docvideo")):
+        if cb_data.startswith(("دەنگ", "docaudio", "docvideo")):
             img.resize((320, height))
         else:
             img.resize((90, height))
         img.save(thumb_image_path, "JPEG")
      #   print(thumb_image_path)
-    if not cb_data.startswith(("video", "audio", "docaudio", "docvideo")):
-        print("no data found")
+    if not cb_data.startswith(("ڤیدیۆ", "دەنگ", "docaudio", "docvideo")):
+        print("هیچ داتایەک نەدۆزرایەوە")
         raise ContinuePropagation
 
     filext = "%(title)s.%(ext)s"
-    userdir = os.path.join(os.getcwd(), "downloads", str(q.message.chat.id))
+    userdir = os.path.join(os.getcwd(), "داگرتنەکان", str(q.message.chat.id))
 
     if not os.path.isdir(userdir):
         os.makedirs(userdir)
     await q.edit_message_reply_markup(
-        InlineKeyboardMarkup([[InlineKeyboardButton("Downloading...", callback_data="down")]]))
+        InlineKeyboardMarkup([[InlineKeyboardButton("دادەگیرێت...", callback_data="دادەگرێ")]]))
     filepath = os.path.join(userdir, filext)
     # await q.edit_message_reply_markup([[InlineKeyboardButton("Processing..")]])
 
@@ -101,7 +101,7 @@ async def catch_youtube_dldata(c, q):
     loop = asyncio.get_event_loop()
 
     med = None
-    if cb_data.startswith("audio"):
+    if cb_data.startswith("دەنگ"):
         filename = await downloadaudiocli(audio_command)
         med = InputMediaAudio(
             media=filename,
@@ -110,7 +110,7 @@ async def catch_youtube_dldata(c, q):
             title=os.path.basename(filename)
         )
 
-    if cb_data.startswith("video"):
+    if cb_data.startswith("ڤیدیۆ"):
         filename = await downloadvideocli(video_command)
         dur = round(duration(filename))
         med = InputMediaVideo(
@@ -142,14 +142,14 @@ async def catch_youtube_dldata(c, q):
     if med:
         loop.create_task(send_file(c, q, med, filename))
     else:
-        print("med not found")
+        print("میدیا نەدۆزراوە")
 
 
 async def send_file(c, q, med, filename):
     print(med)
     try:
         await q.edit_message_reply_markup(
-            InlineKeyboardMarkup([[InlineKeyboardButton("Uploading...", callback_data="down")]]))
+            InlineKeyboardMarkup([[InlineKeyboardButton("بارکردن...", callback_data="down")]]))
         await c.send_chat_action(chat_id=q.message.chat.id, action="upload_document")
         # this one is not working
         await q.edit_message_media(media=med)
