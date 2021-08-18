@@ -60,7 +60,7 @@ async def downloadvideocli(command_to_exec):
     e_response = stderr.decode().strip()
     t_response = stdout.decode().strip()
     print(e_response)
-    filename = t_response.split("Merging formats into")[-1].split('"')[1]
+    filename = t_response.split("تێکەڵکردنی فۆرماتەکان بۆ")[-1].split('"')[1]
     return filename
 
 
@@ -73,6 +73,6 @@ async def downloadaudiocli(command_to_exec):
     stdout, stderr = await process.communicate()
     e_response = stderr.decode().strip()
     t_response = stdout.decode().strip()
-    print("Download error:", e_response)
+    print("داگرتن هەڵەی:", e_response)
 
-    return t_response.split("Destination")[-1].split("Deleting")[0].split(":")[-1].strip()
+    return t_response.split("شوێنی مەبەست")[-1].split("دەسڕێتەوە")[0].split(":")[-1].strip()

@@ -37,9 +37,9 @@ def duration(vid_file_path):
         # commonly stream 0 is the video
         for s in _json['streams']:
             if 'duration' in s:
-                return float(s['duration'])
+                return float(s['ماوە'])
 
-    raise Exception('duration Not found')
+    raise Exception('ماوەکە نەدۆزراوە')
 
 
 if __name__ == "__main__":
